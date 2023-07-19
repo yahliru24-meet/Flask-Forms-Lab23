@@ -14,7 +14,15 @@
 </head>
 <body>
 
+  {% if name in friends %}
 
+    <h1> True, {{name}} is your friend</h1>
+
+  {% else %}
+
+    <h1> False, {{name}} is not your friend</h1>
+
+  {% endif %}
 
 </body>
 </html>
