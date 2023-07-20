@@ -8,9 +8,8 @@ app = Flask(  # Create a flask app
 )
 app.config['SECRET_KEY'] = 'super-secret-key'
 
-username = "yahli"
-password = "123"
-facebook_friends=["Gilad","Sam","Guy", "Daniela", "Costa", "Tom"]
+accounts = {"yahli": ["R123", ["Gilad","Sam","Guy", "Daniela", "Costa", "Tom"]], "Said": ["Said", ["Gilad","Sam"]] , "Yazan": ["YZ", ["Costa", "Tom"]]}
+# facebook_friends=["Gilad","Sam","Guy", "Daniela", "Costa", "Tom"]
 
 
 @app.route('/',  methods=['GET', 'POST'])  # '/' for the default page
@@ -18,9 +17,10 @@ def login():
 	if request.method == "GET":
 		return render_template('login.html')
 	else:
+		global input_usr
 		input_usr = request.form['username']
 		input_pswrd = request.form['password']
-		if (input_usr == username) and (input_pswrd == password):
+		if (input_usr in accounts.keys()) and (input_pswrd == accounts[input_usr][0]):
 			return redirect(url_for('home'))
 		else:
 			return render_template("login.html")
@@ -28,12 +28,12 @@ def login():
 
 @app.route('/home', methods=['GET', 'POST'])
 def home():
-	return render_template("home.html", friends = facebook_friends)
+	return render_template("home.html", friends = accounts[input_usr][1])
 
 
 @app.route("/friend_exists/<string:name>")
 def friend_exists(name):
-	return render_template("friend_exists.html", name = name, friends = facebook_friends)
+	return render_template("friend_exists.html", name = name, friends = accounts[input_usr][1])
 
 
 if __name__ == "__main__":  # Makes sure this is the main process
